@@ -6,6 +6,8 @@ const Matches = () => {
     const [teams, setTeams] = useState([]); // State to store teams
     const [matchData, setMatchData] = useState({ match_id: null, team_home_id: "", team_away_id: "", score_home: "", score_away: "", match_date: "" });
 
+    const baseurl = `http://${process.env.REACT_APP_IP}:5000/`;
+
     useEffect(() => {
         fetchMatches();
         fetchTeams(); // Fetch teams for dropdown
@@ -13,7 +15,7 @@ const Matches = () => {
 
     const fetchMatches = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/matches");
+            const response = await axios.get(baseurl + "matches");
             setMatches(response.data);
         } catch (error) {
             console.error("Error fetching matches:", error);
@@ -22,7 +24,7 @@ const Matches = () => {
 
     const fetchTeams = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/teams");
+            const response = await axios.get(baseurl + "teams");
             setTeams(response.data);
         } catch (error) {
             console.error("Error fetching teams:", error);
@@ -60,7 +62,7 @@ const Matches = () => {
         }
 
         try {
-            await axios.post("http://localhost:5000/create-match", matchData);
+            await axios.post(baseurl + "create-match", matchData);
             fetchMatches();
             setMatchData({ match_id: null, team_home_id: "", team_away_id: "", score_home: "", score_away: "", match_date: "" }); // Clear form
         } catch (error) {
@@ -76,7 +78,7 @@ const Matches = () => {
 
         try {
             // Send match_id in the body along with other match data
-            await axios.put("http://localhost:5000/update-match", matchData);
+            await axios.put(baseurl + "update-match", matchData);
             fetchMatches();
             setMatchData({ match_id: null, team_home_id: "", team_away_id: "", score_home: "", score_away: "", match_date: "" }); // Clear form
         } catch (error) {
@@ -88,7 +90,7 @@ const Matches = () => {
     const deleteMatch = async (matchId) => {
         try {
             // Send match_id in the request body as an object
-            await axios.post("http://localhost:5000/delete-match", { match_id: matchId });
+            await axios.post(baseurl + "delete-match", { match_id: matchId });
             fetchMatches(); // Refresh the match list after deletion
         } catch (error) {
             console.error("Error deleting match:", error);

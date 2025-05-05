@@ -16,13 +16,16 @@ const Summary = () => {
     const [matches, setMatches] = useState([]);
     const [summary, setSummary] = useState({});
 
+    const baseurl = `http://${process.env.REACT_APP_IP}:5000/`;
+
     useEffect(() => {
         fetchRankings();
     }, []);
 
     const fetchRankings = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/rankings");
+            const response = await axios.get(baseurl + "rankings");
+
             setRankings(response.data);
         } catch (error) {
             console.error("Error fetching rankings:", error);
@@ -31,7 +34,7 @@ const Summary = () => {
 
     const fetchFilteredMatches = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/matches/filter", {
+            const response = await axios.get(baseurl + "matches/filter", {
                 params: filters,
             });
             setMatches(response.data.matches);

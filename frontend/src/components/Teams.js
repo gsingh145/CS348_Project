@@ -5,18 +5,20 @@ const Teams = () => {
     const [teams, setTeams] = useState([]);
     const [teamName, setTeamName] = useState("");
 
+    const baseurl = `http://${process.env.REACT_APP_IP}:5000/`;
+
     useEffect(() => {
         fetchTeams();
     }, []);
 
     const fetchTeams = async () => {
-        const response = await axios.get("http://localhost:5000/teams");
+        const response = await axios.get(baseurl + "teams");
         setTeams(response.data);
     };
 
     const createTeam = async () => {
         try {
-            await axios.post("http://localhost:5000/teams", { name: teamName });
+            await axios.post(baseurl + "teams", { name: teamName });
             fetchTeams(); 
         } catch (error) {
             if (error.response && error.response.status === 500) {

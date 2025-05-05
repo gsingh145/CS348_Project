@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createPool({
-    host: "localhost",
+    host: process.env.IP,
     user: "root",
     password: "your_password",
     database: "cs348_project",
